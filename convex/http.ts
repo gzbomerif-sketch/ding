@@ -61,4 +61,47 @@ http.route({
   }),
 });
 
+// Webhook endpoint for scraper results from Modal
+http.route({
+  path: "/scrapers/webhook",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    try {
+      const { jobId, status, platform, data, error } = await request.json();
+
+      if (!jobId) {
+        return new Response(
+          JSON.stringify({ error: "Missing jobId" }),
+          { status: 400 }
+        );
+      }
+
+      // Handle webhook
+      await ctx.runMutation(api.scraperJobs.handleWebhook, {
+        jobId: jobId as Id<"scraperJobs">,
+        status,
+        platform,
+        data,
+        error,
+      });
+
+      return new Response(
+        JSON.stringify({ success: true }),
+        { 
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+    } catch (error) {
+      console.error("Webhook error:", error);
+      return new Response(
+        JSON.stringify({ 
+          error: error instanceof Error ? error.message : "Unknown error" 
+        }),
+        { status: 500 }
+      );
+    }
+  }),
+});
+
 export default http;
