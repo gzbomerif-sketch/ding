@@ -6,6 +6,8 @@ import {
   IconInnerShadowTop,
   IconListDetails,
   IconSettings,
+  IconChartBar,
+  IconWorldWww,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -27,6 +29,16 @@ const data = {
       title: "Tasks",
       url: "/tasks",
       icon: IconListDetails,
+    },
+    {
+      title: "Campaigns",
+      url: "/campaigns",
+      icon: IconChartBar,
+    },
+    {
+      title: "Site Mirror",
+      url: "/site-mirror",
+      icon: IconWorldWww,
     },
   ],
   navSecondary: [
